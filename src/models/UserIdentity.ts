@@ -1,5 +1,5 @@
 import { client } from "../database";
-
+import { ErrorStatus } from "./ErrorModel";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 dotenv.config();
@@ -12,35 +12,40 @@ export type UserIdentity = {
   firstName?: string;
   lastName?: string;
   password?: string;
-};
+}
 const tableName = "user_table";
 
 export class UserIdentityStore {
-  async index(): Promise<UserIdentity[]> {
+  async index(): Promise<UserIdentity[] | ErrorStatus> {
     try {
       const connection = await client.connect();
-      const result = await connection.query("SELECT * FROM user_table");
+      const result = await connection.query("SELECT * FROM " + tableName);
       connection.release();
       return result.rows;
     } catch (err) {
-      throw new Error("Could not connect to database " + err);
+      console.log(err);
+
+      return new ErrorStatus("500 Server Error Could not list users", 500);
     }
   }
 
-  async show(id: number): Promise<UserIdentity> {
+  async show(id: number): Promise<UserIdentity | ErrorStatus> {
     try {
       const connection = await client.connect();
       const result = await connection.query(
         "SELECT * FROM " + tableName + " WHERE id = " + id
       );
       connection.release();
+      if (result.rowCount == 0) {
+        return new ErrorStatus("User Not Found", 404);
+      }
       return result.rows[0];
     } catch (err) {
-      throw new Error("Could not connect to database " + err);
+      return new ErrorStatus("500 Server Error Could Search for User", 500);
     }
   }
 
-  async create(user: UserIdentity): Promise<UserIdentity | Error> {
+  async create(user: UserIdentity): Promise<UserIdentity | ErrorStatus> {
     try {
       if (user.firstName == null || user.password == null) {
         throw new Error("bad Data");
@@ -72,26 +77,32 @@ export class UserIdentityStore {
     } catch (err) {
       if (err instanceof Error)
         if (err.message.includes("")) {
-          return new Error("Email is Used Before ");
+          return new ErrorStatus("Email is Used Before ", 400);
         }
-      return new Error("500 Server Error");
+      return new ErrorStatus("500 Server Error", 500);
     }
   }
 
-  async delete(id: number): Promise<UserIdentity> {
+  async delete(id: number): Promise<UserIdentity | ErrorStatus> {
     try {
       const connection = await client.connect();
       const result = await connection.query(
         "DELETE FROM " + tableName + " WHERE id = " + id + "  RETURNING *"
       );
       connection.release();
+      if (result.rowCount == 0) {
+        return new ErrorStatus("User Could Not be deleted", 500);
+      }
       return result.rows[0];
     } catch (err) {
-      throw new Error("Could not connect to database " + err);
+      return new ErrorStatus("500 Server Error unable to delete user", 500);
     }
   }
 
-  async auth(email: string, password: string): Promise<UserIdentity | null> {
+  async auth(
+    email: string,
+    password: string
+  ): Promise<UserIdentity | ErrorStatus> {
     try {
       const connection = await client.connect();
       const result = await connection.query(
@@ -99,21 +110,21 @@ export class UserIdentityStore {
         [email]
       );
       connection.release();
-      console.log(email + " " + password);
+      console.log(result.rows);
       if (result.rowCount > 0) {
         const user = result.rows[0];
         //console.log(password+BCRYPT_PASSWORD +" "+user.password)
         if (bcrypt.compareSync(password + BCRYPT_PASSWORD, user.password))
           return user;
-        else return null;
-      } else return null;
+        else return new ErrorStatus("User name or Password incorrect", 403);
+      } else return new ErrorStatus("User name or Password incorrect", 403);
     } catch (err) {
-      throw new Error("Could not connect to database " + err);
+      return new ErrorStatus("500 Server Error unable to Authenticate", 500);
     }
   }
 }
 
-new UserIdentityStore().index().then((result: UserIdentity[]) => {
+new UserIdentityStore().index().then((result: UserIdentity[] | ErrorStatus) => {
   console.log(result);
 });
 // new UserIdentityStore().create({name:"new User", password:"TestPasswordChange"})

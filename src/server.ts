@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import bodyParser from "body-parser";
 import userIdentityRoutes from "./handlers/UserIdentityRoute";
+import productRoutes from "./handlers/ProductRoute";
 
 const app: express.Application = express();
 const port = 8085;
@@ -17,3 +18,4 @@ app.listen(port, function () {
 });
 
 userIdentityRoutes(app);
+productRoutes(app);

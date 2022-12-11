@@ -1,7 +1,9 @@
-import express, { Request, Response, NextFunction } from "express";
+import express, { Request, Response } from "express";
+import { ErrorStatus } from "../models/ErrorModel";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { saveUser } from "../logic/userBussniss";
+import { verifyAuthToken } from "../util";
 dotenv.config();
 
 const { JWT_SECRET } = process.env;
@@ -10,18 +12,21 @@ import { UserIdentity, UserIdentityStore } from "../models/UserIdentity";
 
 const store = new UserIdentityStore();
 
-const index = async (_req: Request, res: Response) => {
-  console.log("index ");
-  const articles = await store.index();
-  console.log(articles);
+// const index = async (_req: Request, res: Response) => {
+//   console.log("index ");
+//   const articles = await store.index();
+//   console.log(articles);
 
-  res.json(articles);
-};
+//   res.json(articles);
+// };
 
 const show = async (req: Request, res: Response) => {
-  const user = await store.show(Number(req.path.split("/").pop()));
-  user.password = undefined;
-  res.json(user);
+  const rsAwait = await store.show(Number(req.path.split("/").pop()));
+  if (rsAwait instanceof ErrorStatus) {
+    res.status(rsAwait.status).json(rsAwait.message);
+  }
+  (rsAwait as UserIdentity).password = undefined;
+  res.json(rsAwait);
 };
 const create = async (req: Request, res: Response) => {
   try {
@@ -52,21 +57,35 @@ const create = async (req: Request, res: Response) => {
 };
 const login = async (req: Request, res: Response) => {
   const user = await store.auth(req.body.email, req.body.password);
-  if (user != null)
+  if (user instanceof ErrorStatus)
+    {
+      user as ErrorStatus;
+      console.log("ErrorState "+user.message+" "+user.status);
+      res.status(user.status).json(user.message);
+
+     
+      }
+  else {
     res.json(
       jwt.sign(
         { email: user.email, firstName: user.firstName },
         JWT_SECRET as string
       )
     );
-  else {
-    res.status(401).json("Invalid Data");
+    console.log(user);
   }
 };
 
 const destroy = async (req: Request, res: Response) => {
   const deleted = await store.delete(Number(req.path.split("/").pop()));
-  res.json(deleted);
+  if (deleted instanceof ErrorStatus)
+  {
+    deleted as ErrorStatus;
+    res.status(deleted.status).json(deleted.message);
+  } 
+  else {
+    res.status(200).json(deleted);
+  }
 };
 //here we are passing app from main server
 const userIdentityRoutes = (app: express.Application) => {
@@ -77,21 +96,17 @@ const userIdentityRoutes = (app: express.Application) => {
   app.post("/login", login);
 };
 
-const verifyAuthToken = (req: Request, res: Response, next: NextFunction) => {
-  try {
-    console.log("verifyAuthToken ");
-    const authorizationHeader = req.headers.authorization as string;
-    // console.log("verifyAuthToken authorizationHeader "+authorizationHeader)
-    const token = authorizationHeader.split(" ")[1];
-    // console.log("verifyAuthToken token "+token)
-    jwt.verify(token, JWT_SECRET as string);
-    //  console.log("authorization headers" + authorizationHeader + ":token " + token + ":decoded " + decoded)
-    //res.status(200)
-    next();
-  } catch (error) {
-    console.log(error);
-
-    res.status(401).json("bad token");
+export async function index(req: Request, res: Response) {
+  const Response = await store.index();
+  if (Response instanceof ErrorStatus)
+  {
+    Response as ErrorStatus;
+    res.status(Response.status).json(Response.message);
+  } 
+  else {
+    res.status(200).json(Response);
   }
-};
+   
+}
+
 export default userIdentityRoutes;

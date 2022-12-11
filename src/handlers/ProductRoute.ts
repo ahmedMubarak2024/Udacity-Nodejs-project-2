@@ -8,7 +8,7 @@ const show = async (req: Request, res: Response) => {
   const rsAwait = await store.show(Number(req.path.split("/").pop()));
   if (rsAwait instanceof ErrorStatus) {
     res.status(rsAwait.status).json(rsAwait.message);
-    return
+    return;
   }
   res.status(200).json(rsAwait);
 };
@@ -21,7 +21,7 @@ const create = async (req: Request, res: Response) => {
   const rsAwait = await store.create(product);
   if (rsAwait instanceof ErrorStatus) {
     res.status(rsAwait.status).json(rsAwait.message);
-    return
+    return;
   }
   res.status(200).json(rsAwait);
 };
@@ -30,7 +30,7 @@ const index = async (req: Request, res: Response) => {
   const rsAwait = await store.index();
   if (rsAwait instanceof ErrorStatus) {
     res.status(rsAwait.status).json(rsAwait.message);
-    return
+    return;
   }
   res.status(200).json(rsAwait);
 };

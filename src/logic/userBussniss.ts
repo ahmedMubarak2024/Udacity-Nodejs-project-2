@@ -28,4 +28,3 @@ export const saveUser = async (
   }
   return errors;
 };
-

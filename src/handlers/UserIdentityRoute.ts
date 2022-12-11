@@ -57,18 +57,14 @@ const create = async (req: Request, res: Response) => {
 };
 const login = async (req: Request, res: Response) => {
   const user = await store.auth(req.body.email, req.body.password);
-  if (user instanceof ErrorStatus)
-    {
-      user as ErrorStatus;
-      console.log("ErrorState "+user.message+" "+user.status);
-      res.status(user.status).json(user.message);
-
-     
-      }
-  else {
+  if (user instanceof ErrorStatus) {
+    user as ErrorStatus;
+    console.log("ErrorState " + user.message + " " + user.status);
+    res.status(user.status).json(user.message);
+  } else {
     res.json(
       jwt.sign(
-        { email: user.email, firstName: user.firstName },
+        { email: user.email, firstName: user.firstName, id: user.id },
         JWT_SECRET as string
       )
     );
@@ -78,12 +74,10 @@ const login = async (req: Request, res: Response) => {
 
 const destroy = async (req: Request, res: Response) => {
   const deleted = await store.delete(Number(req.path.split("/").pop()));
-  if (deleted instanceof ErrorStatus)
-  {
+  if (deleted instanceof ErrorStatus) {
     deleted as ErrorStatus;
     res.status(deleted.status).json(deleted.message);
-  } 
-  else {
+  } else {
     res.status(200).json(deleted);
   }
 };
@@ -98,15 +92,12 @@ const userIdentityRoutes = (app: express.Application) => {
 
 export async function index(req: Request, res: Response) {
   const Response = await store.index();
-  if (Response instanceof ErrorStatus)
-  {
+  if (Response instanceof ErrorStatus) {
     Response as ErrorStatus;
     res.status(Response.status).json(Response.message);
-  } 
-  else {
+  } else {
     res.status(200).json(Response);
   }
-   
 }
 
 export default userIdentityRoutes;

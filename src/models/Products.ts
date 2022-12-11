@@ -5,7 +5,7 @@ export type Product = {
   name: string;
   price: number;
 };
-const tableName = "products_table";
+export const tableName = "products_table";
 
 export class ProductStore {
   async index(): Promise<Product[] | ErrorStatus> {

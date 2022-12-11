@@ -12,8 +12,8 @@ export type UserIdentity = {
   firstName?: string;
   lastName?: string;
   password?: string;
-}
-const tableName = "user_table";
+};
+export const tableName = "user_table";
 
 export class UserIdentityStore {
   async index(): Promise<UserIdentity[] | ErrorStatus> {

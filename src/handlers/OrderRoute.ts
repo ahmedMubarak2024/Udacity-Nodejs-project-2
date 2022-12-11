@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import { ErrorStatus } from "../models/ErrorModel";
 import { verifyAuthToken } from "../util";
-import { Order, OrderProduct, OrderStore } from "../models/OrderModel";
+import {  OrderStore } from "../models/OrderModel";
 import { UserIdentity, UserIdentityStore } from "../models/UserIdentity";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";

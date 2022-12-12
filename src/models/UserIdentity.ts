@@ -1,7 +1,7 @@
 import { client } from "../database";
 import { ErrorStatus } from "./ErrorModel";
 import bcrypt from "bcrypt";
-import {BCRYPT_PASSWORD,SALT_ROUNDS} from '../util'
+import { BCRYPT_PASSWORD, SALT_ROUNDS } from "../util";
 
 export type UserIdentity = {
   id?: number;

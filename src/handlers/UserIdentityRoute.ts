@@ -2,8 +2,7 @@ import express, { Request, Response } from "express";
 import { ErrorStatus } from "../models/ErrorModel";
 import jwt from "jsonwebtoken";
 import { saveUser } from "../logic/userBussniss";
-import { verifyAuthToken,JWT_SECRET } from "../util";
-
+import { verifyAuthToken, JWT_SECRET } from "../util";
 
 import { UserIdentity, UserIdentityStore } from "../models/UserIdentity";
 
@@ -65,7 +64,7 @@ const login = async (req: Request, res: Response) => {
         JWT_SECRET as string
       )
     );
-   // console.log(user);
+    // console.log(user);
   }
 };
 

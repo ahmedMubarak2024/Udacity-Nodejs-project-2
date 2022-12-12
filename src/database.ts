@@ -1,6 +1,11 @@
 import { Pool } from "pg";
-import {POSTGRES_DB,POSTGRES_HOST,POSTGRES_PASSWORD,POSTGRES_USER,ENV} from './util'
-
+import {
+  POSTGRES_DB,
+  POSTGRES_HOST,
+  POSTGRES_PASSWORD,
+  POSTGRES_USER,
+  ENV,
+} from "./util";
 
 export const client = new Pool({
   host: POSTGRES_HOST,
@@ -8,4 +13,4 @@ export const client = new Pool({
   user: POSTGRES_USER,
   password: POSTGRES_PASSWORD,
 });
-console.log(ENV+" "+POSTGRES_DB)
+console.log(ENV + " " + POSTGRES_DB);

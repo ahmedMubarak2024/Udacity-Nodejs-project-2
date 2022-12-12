@@ -1,10 +1,9 @@
 import express, { Request, Response } from "express";
 import { ErrorStatus } from "../models/ErrorModel";
-import { verifyAuthToken,JWT_SECRET } from "../util";
-import {  OrderStore } from "../models/OrderModel";
+import { verifyAuthToken, JWT_SECRET } from "../util";
+import { OrderStore } from "../models/OrderModel";
 import { UserIdentity, UserIdentityStore } from "../models/UserIdentity";
 import jwt from "jsonwebtoken";
-
 
 const store = new OrderStore();
 

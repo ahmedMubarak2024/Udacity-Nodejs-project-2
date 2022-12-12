@@ -1,8 +1,35 @@
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-dotenv.config();
+import path from 'path';
+import fs from 'fs';
+// const parseCliFlagValue = (flagName:string) => {
+//   const flag = process.argv.find(argument => argument.indexOf(`-${flagName}=`) > -1);
+
+//   if (flag) {
+//       return flag.slice(flag.indexOf('=') + 1);
+//   }
+
+//   return undefined;
+// };
+
+// const envFile = '.env' +parseCliFlagValue('env')
+const file = '.env'+((process.env.NODE_ENV!=undefined)? ("."+process.env.NODE_ENV) : "")
+console.log(file);
+dotenv.config({path:file.trim()})
+
+console.log(process.env.NODE_ENV)
+export const { POSTGRES_HOST, 
+  POSTGRES_DB, 
+  POSTGRES_USER,
+   POSTGRES_PASSWORD,
+   ENV ,
+   BCRYPT_PASSWORD ,
+   SALT_ROUNDS,
+   JWT_SECRET
+  ,NODE_ENV} =process.env;
+  console.log(process.env.POSTGRES_USER)
 import { Request, Response, NextFunction } from "express";
-const { JWT_SECRET } = process.env;
+
 
 export const verifyAuthToken = (
   req: Request,

@@ -1,10 +1,7 @@
 import { client } from "../database";
 import { ErrorStatus } from "./ErrorModel";
 import bcrypt from "bcrypt";
-import dotenv from "dotenv";
-dotenv.config();
-
-const { BCRYPT_PASSWORD, SALT_ROUNDS } = process.env;
+import {BCRYPT_PASSWORD,SALT_ROUNDS} from '../util'
 
 export type UserIdentity = {
   id?: number;
@@ -110,7 +107,7 @@ export class UserIdentityStore {
         [email]
       );
       connection.release();
-      console.log(result.rows);
+      //console.log(result.rows);
       if (result.rowCount > 0) {
         const user = result.rows[0];
         //console.log(password+BCRYPT_PASSWORD +" "+user.password)

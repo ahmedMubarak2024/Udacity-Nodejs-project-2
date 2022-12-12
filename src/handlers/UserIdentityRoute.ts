@@ -1,12 +1,9 @@
 import express, { Request, Response } from "express";
 import { ErrorStatus } from "../models/ErrorModel";
 import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
 import { saveUser } from "../logic/userBussniss";
-import { verifyAuthToken } from "../util";
-dotenv.config();
+import { verifyAuthToken,JWT_SECRET } from "../util";
 
-const { JWT_SECRET } = process.env;
 
 import { UserIdentity, UserIdentityStore } from "../models/UserIdentity";
 
@@ -41,7 +38,7 @@ const create = async (req: Request, res: Response) => {
     if (userRes instanceof Array) {
       res.status(401).json(userRes);
     } else {
-      console.log(userRes);
+      //console.log(userRes);
       user = userRes as UserIdentity;
       res.json(
         jwt.sign(
@@ -59,7 +56,7 @@ const login = async (req: Request, res: Response) => {
   const user = await store.auth(req.body.email, req.body.password);
   if (user instanceof ErrorStatus) {
     user as ErrorStatus;
-    console.log("ErrorState " + user.message + " " + user.status);
+    //console.log("ErrorState " + user.message + " " + user.status);
     res.status(user.status).json(user.message);
   } else {
     res.json(
@@ -68,7 +65,7 @@ const login = async (req: Request, res: Response) => {
         JWT_SECRET as string
       )
     );
-    console.log(user);
+   // console.log(user);
   }
 };
 
@@ -90,7 +87,7 @@ const userIdentityRoutes = (app: express.Application) => {
   app.post("/login", login);
 };
 
-export async function index(req: Request, res: Response) {
+async function index(req: Request, res: Response) {
   const Response = await store.index();
   if (Response instanceof ErrorStatus) {
     Response as ErrorStatus;

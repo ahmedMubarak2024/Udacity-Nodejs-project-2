@@ -4,7 +4,7 @@ import userIdentityRoutes from "./handlers/UserIdentityRoute";
 import productRoutes from "./handlers/ProductRoute";
 import OrderRoute from "./handlers/OrderRoute";
 
-const app: express.Application = express();
+export const app: express.Application = express();
 const port = 8085;
 const address = "127.0.0.1:" + port;
 

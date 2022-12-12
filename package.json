@@ -7,8 +7,8 @@
     "prettier": "prettier --config .prettierrc ./src/**/*.ts --write",
     "lint": "eslint . --ext .ts",
     "start": "node src/server.ts",
-    "watch": "tsc && tsc-watch --onSuccess \"node ./build/server.js\"",
-    "test": "jasmine-ts",
+    "watch": "tsc  && set NODE_ENV=dev && tsc-watch  --onSuccess \"node ./build/server.js\" ",
+    "test": "npx db-migrate up -e test && tsc && set NODE_ENV=test && jasmine-ts && db-migrate reset",
     "tsc": "tsc"
   },
   "author": "Udacity",

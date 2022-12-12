@@ -1,6 +1,6 @@
 /* Replace with your SQL commands */
 
-CREATE TABLE user_table(
+CREATE TABLE IF NOT EXISTS user_table(
 id SERIAL PRIMARY KEY,
 email VARCHAR UNIQUE,
 first_name VARCHAR,

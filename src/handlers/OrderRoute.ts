@@ -1,12 +1,10 @@
 import express, { Request, Response } from "express";
 import { ErrorStatus } from "../models/ErrorModel";
-import { verifyAuthToken } from "../util";
+import { verifyAuthToken,JWT_SECRET } from "../util";
 import {  OrderStore } from "../models/OrderModel";
 import { UserIdentity, UserIdentityStore } from "../models/UserIdentity";
 import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
-dotenv.config();
-const { JWT_SECRET } = process.env;
+
 
 const store = new OrderStore();
 

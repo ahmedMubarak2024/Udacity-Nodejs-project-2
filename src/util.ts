@@ -1,18 +1,6 @@
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import path from "path";
-import fs from "fs";
-// const parseCliFlagValue = (flagName:string) => {
-//   const flag = process.argv.find(argument => argument.indexOf(`-${flagName}=`) > -1);
 
-//   if (flag) {
-//       return flag.slice(flag.indexOf('=') + 1);
-//   }
-
-//   return undefined;
-// };
-
-// const envFile = '.env' +parseCliFlagValue('env')
 const file =
   ".env" +
   (process.env.NODE_ENV != undefined ? "." + process.env.NODE_ENV : "");

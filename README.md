@@ -120,3 +120,26 @@ return orderdata
 get /orders/:id
 header:authorization:{{token}}
 return orderdata with list of product
+
+i expect two env files please create them in root directory this is why i didn't remove it in git but the reviewer request it so here they are :
+.env.dev
+POSTGRES_DB = dev_database
+ENV = dev
+POSTGRES_HOST = 127.0.0.1
+POSTGRES_USER = username
+POSTGRES_PASSWORD = password
+BCRYPT_PASSWORD = SECRET_PASSWORD
+SALT_ROUNDS = 10
+JWT_SECRET = SECRET_USED_IN_JWT
+
+------------------------------------
+
+.env.test
+POSTGRES_DB = test_database
+ENV = test
+POSTGRES_HOST = 127.0.0.1
+POSTGRES_USER = username
+POSTGRES_PASSWORD = password
+BCRYPT_PASSWORD = SECRET_PASSWORD
+SALT_ROUNDS = 10
+JWT_SECRET = SECRET_USED_IN_JWT

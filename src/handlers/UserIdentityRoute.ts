@@ -81,7 +81,7 @@ const destroy = async (req: Request, res: Response) => {
 const userIdentityRoutes = (app: express.Application) => {
   app.get("/user", verifyAuthToken, index);
   app.get("/user/:id", verifyAuthToken, show);
-  app.post("/user", verifyAuthToken, create);
+  app.post("/user", create);
   app.delete("/user", verifyAuthToken, destroy);
   app.post("/login", login);
 };

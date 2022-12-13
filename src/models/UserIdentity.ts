@@ -20,7 +20,7 @@ export class UserIdentityStore {
       connection.release();
       return result.rows;
     } catch (err) {
-      console.log(err);
+      console.error(err);
 
       return new ErrorStatus("500 Server Error Could not list users", 500);
     }
@@ -54,13 +54,13 @@ export class UserIdentityStore {
         user.password + BCRYPT_PASSWORD,
         parseInt(SALT_ROUNDS as string)
       );
-      console.log("Password before " + user.password + " has been " + hash);
+      //console.log("Password before " + user.password + " has been " + hash);
       user.password = hash.toString();
       const sql =
         "INSERT INTO " +
         tableName +
         " (email, first_name ,last_name , password ) VALUES ($1 , $2,$3,$4)   RETURNING *";
-      console.log(sql);
+      //console.log(sql);
       const result = await connection.query(sql, [
         user.email,
         user.firstName,
@@ -69,7 +69,7 @@ export class UserIdentityStore {
       ]);
 
       connection.release();
-      console.log(result);
+      //console.log(result);
       return result.rows[0];
     } catch (err) {
       if (err instanceof Error)

@@ -2,9 +2,8 @@ import { UserIdentity, UserIdentityStore } from "../models/UserIdentity";
 describe("Testing User from database", function () {
   const userIdentityStore = new UserIdentityStore();
   it("when list user we have on user ", async function () {
-    expect(
-      ((await userIdentityStore.index()) as Array<UserIdentity>).length
-    ).toBe(1);
+    const res = await userIdentityStore.index();
+    expect(res instanceof Array<UserIdentity>).toBe(true);
   });
 
   it("show the user with id 1 ", async function () {

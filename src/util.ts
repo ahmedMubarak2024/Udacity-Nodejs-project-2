@@ -4,10 +4,10 @@ import dotenv from "dotenv";
 const file =
   ".env" +
   (process.env.NODE_ENV != undefined ? "." + process.env.NODE_ENV : "");
-console.log(file);
+//console.log(file);
 dotenv.config({ path: file.trim() });
 
-console.log(process.env.NODE_ENV);
+//console.log(process.env.NODE_ENV);
 export const {
   POSTGRES_HOST,
   POSTGRES_DB,
@@ -19,7 +19,7 @@ export const {
   JWT_SECRET,
   NODE_ENV,
 } = process.env;
-console.log(process.env.POSTGRES_USER);
+//console.log(process.env.POSTGRES_USER);
 import { Request, Response, NextFunction } from "express";
 
 export const verifyAuthToken = (
@@ -28,7 +28,7 @@ export const verifyAuthToken = (
   next: NextFunction
 ) => {
   try {
-    console.log("verifyAuthToken ");
+    //console.log("verifyAuthToken ");
     const authorizationHeader = req.headers.authorization as string;
     // console.log("verifyAuthToken authorizationHeader "+authorizationHeader)
     const token = authorizationHeader;

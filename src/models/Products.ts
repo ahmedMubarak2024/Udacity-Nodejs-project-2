@@ -43,11 +43,11 @@ export class ProductStore {
         "INSERT INTO " +
         tableName +
         " (name, price ) VALUES ($1 , $2)   RETURNING *";
-      console.log(sql);
+      //console.log(sql);
       const result = await connection.query(sql, [user.name, user.price]);
 
       connection.release();
-      console.log(result);
+      //console.log(result);
       return result.rows[0];
     } catch (err) {
       return new ErrorStatus("500 Server Error", 500);

@@ -13,4 +13,4 @@ export const client = new Pool({
   user: POSTGRES_USER,
   password: POSTGRES_PASSWORD,
 });
-console.log(ENV + " " + POSTGRES_DB);
+//console.log(ENV + " " + POSTGRES_DB);

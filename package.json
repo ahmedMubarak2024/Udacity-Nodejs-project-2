@@ -8,7 +8,7 @@
     "lint": "eslint . --ext .ts",
     "start": "node src/server.ts",
     "watch": "tsc  && set NODE_ENV=dev && tsc-watch  --onSuccess \"node ./build/server.js\" ",
-    "test": "npx db-migrate up -e test && tsc && set NODE_ENV=test && jasmine-ts && db-migrate reset",
+    "test": "npx db-migrate up -e test && tsc && set NODE_ENV=test && jasmine-ts && db-migrate reset -e test || db-migrate reset -e test ",
     "tsc": "tsc"
   },
   "author": "Udacity",

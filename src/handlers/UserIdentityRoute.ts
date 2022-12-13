@@ -30,7 +30,7 @@ const show = async (req: Request, res: Response) => {
 };
 const create = async (req: Request, res: Response) => {
   try {
-    let user: UserIdentity = {
+    const user: UserIdentity = {
       email: req.body.email,
       firstName: req.body.firstName,
       lastName: req.body.lastName,
@@ -42,10 +42,10 @@ const create = async (req: Request, res: Response) => {
       res.status(401).json(userRes);
     } else {
       //console.log(userRes);
-      user = userRes as UserIdentity;
+      const newUser = userRes as UserIdentity;
       res.json(
         jwt.sign(
-          { email: user.email, firstName: user.firstName },
+          { email: newUser.email, firstName: newUser.firstName },
           process.env.JWT_SECRET as string
         )
       );

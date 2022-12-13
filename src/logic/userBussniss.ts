@@ -21,10 +21,15 @@ export const saveUser = async (
     errors.push("User must have password");
   }
   if (errors.length == 0) {
-    const reUser = await userIdentityStore.create(user);
-    if (reUser instanceof Error) {
-      errors.push(reUser.message);
-    } else return reUser as UserIdentity;
+    try {
+      const reUser = await userIdentityStore.create(user);
+      if (reUser instanceof Error) {
+        errors.push(reUser.message);
+      } else return reUser as UserIdentity;
+    } catch (err) {
+      console.error(err);
+      errors.push("500 Server Error");
+    }
   }
   return errors;
 };

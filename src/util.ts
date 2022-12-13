@@ -43,3 +43,8 @@ export const verifyAuthToken = (
     res.status(401).json("bad token");
   }
 };
+
+export function handleError(res: Response, err: unknown): void {
+  console.error(err);
+  res.status(500).json("500 Server Error");
+}

@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 import { ErrorStatus } from "../models/ErrorModel";
 import jwt from "jsonwebtoken";
 import { saveUser } from "../logic/userBussniss";
-import { verifyAuthToken, JWT_SECRET } from "../util";
+import { verifyAuthToken, JWT_SECRET, handleError } from "../util";
 
 import { UserIdentity, UserIdentityStore } from "../models/UserIdentity";
 
@@ -17,12 +17,16 @@ const store = new UserIdentityStore();
 // };
 
 const show = async (req: Request, res: Response) => {
-  const rsAwait = await store.show(Number(req.path.split("/").pop()));
-  if (rsAwait instanceof ErrorStatus) {
-    res.status(rsAwait.status).json(rsAwait.message);
+  try {
+    const rsAwait = await store.show(Number(req.path.split("/").pop()));
+    if (rsAwait instanceof ErrorStatus) {
+      res.status(rsAwait.status).json(rsAwait.message);
+    }
+    (rsAwait as UserIdentity).password = undefined;
+    res.json(rsAwait);
+  } catch (err) {
+    handleError(res, err);
   }
-  (rsAwait as UserIdentity).password = undefined;
-  res.json(rsAwait);
 };
 const create = async (req: Request, res: Response) => {
   try {
@@ -52,29 +56,37 @@ const create = async (req: Request, res: Response) => {
   }
 };
 const login = async (req: Request, res: Response) => {
-  const user = await store.auth(req.body.email, req.body.password);
-  if (user instanceof ErrorStatus) {
-    user as ErrorStatus;
-    //console.log("ErrorState " + user.message + " " + user.status);
-    res.status(user.status).json(user.message);
-  } else {
-    res.json(
-      jwt.sign(
-        { email: user.email, firstName: user.firstName, id: user.id },
-        JWT_SECRET as string
-      )
-    );
-    // console.log(user);
+  try {
+    const user = await store.auth(req.body.email, req.body.password);
+    if (user instanceof ErrorStatus) {
+      user as ErrorStatus;
+      //console.log("ErrorState " + user.message + " " + user.status);
+      res.status(user.status).json(user.message);
+    } else {
+      res.json(
+        jwt.sign(
+          { email: user.email, firstName: user.firstName, id: user.id },
+          JWT_SECRET as string
+        )
+      );
+      // console.log(user);
+    }
+  } catch (err) {
+    handleError(res, err);
   }
 };
 
 const destroy = async (req: Request, res: Response) => {
-  const deleted = await store.delete(Number(req.path.split("/").pop()));
-  if (deleted instanceof ErrorStatus) {
-    deleted as ErrorStatus;
-    res.status(deleted.status).json(deleted.message);
-  } else {
-    res.status(200).json(deleted);
+  try {
+    const deleted = await store.delete(Number(req.path.split("/").pop()));
+    if (deleted instanceof ErrorStatus) {
+      deleted as ErrorStatus;
+      res.status(deleted.status).json(deleted.message);
+    } else {
+      res.status(200).json(deleted);
+    }
+  } catch (err) {
+    handleError(res, err);
   }
 };
 //here we are passing app from main server
@@ -87,12 +99,16 @@ const userIdentityRoutes = (app: express.Application) => {
 };
 
 async function index(req: Request, res: Response) {
-  const Response = await store.index();
-  if (Response instanceof ErrorStatus) {
-    Response as ErrorStatus;
-    res.status(Response.status).json(Response.message);
-  } else {
-    res.status(200).json(Response);
+  try {
+    const Response = await store.index();
+    if (Response instanceof ErrorStatus) {
+      Response as ErrorStatus;
+      res.status(Response.status).json(Response.message);
+    } else {
+      res.status(200).json(Response);
+    }
+  } catch (err) {
+    handleError(res, err);
   }
 }
 

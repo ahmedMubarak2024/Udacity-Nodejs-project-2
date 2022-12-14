@@ -6,10 +6,10 @@ export const saveUser = async (
   user: UserIdentity
 ): Promise<Array<string> | UserIdentity> => {
   const errors: Array<string> = [];
-  if (user.firstName == undefined) {
+  if (user.first_name == undefined) {
     errors.push("User must have first name");
   }
-  if (user.lastName == undefined) {
+  if (user.last_name == undefined) {
     errors.push("User must have last name");
   }
   if (user.email == undefined) {

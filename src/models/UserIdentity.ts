@@ -6,8 +6,8 @@ import { BCRYPT_PASSWORD, SALT_ROUNDS } from "../util";
 export type UserIdentity = {
   id?: number;
   email?: string;
-  firstName?: string;
-  lastName?: string;
+  first_name?: string;
+  last_name?: string;
   password?: string;
 };
 export const tableName = "user_table";
@@ -44,7 +44,7 @@ export class UserIdentityStore {
 
   async create(user: UserIdentity): Promise<UserIdentity | ErrorStatus> {
     try {
-      if (user.firstName == null || user.password == null) {
+      if (user.first_name == null || user.password == null) {
         throw new Error("bad Data");
       }
 
@@ -63,8 +63,8 @@ export class UserIdentityStore {
       //console.log(sql);
       const result = await connection.query(sql, [
         user.email,
-        user.firstName,
-        user.lastName,
+        user.first_name,
+        user.last_name,
         user.password,
       ]);
 

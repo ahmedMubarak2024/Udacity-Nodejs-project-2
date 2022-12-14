@@ -1,6 +1,7 @@
 import supertest from "supertest";
 
 import { app } from "../server";
+import { exec } from "child_process";
 
 const request = supertest(app);
 const token =
@@ -18,6 +19,9 @@ describe("test order Routes", () => {
           user_id: "1",
         });
         expect(req.status).toBe(200);
+      })
+      .catch((err) => {
+        //console.error(err);
       });
   });
 });

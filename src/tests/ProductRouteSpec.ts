@@ -1,6 +1,7 @@
 import supertest from "supertest";
 
 import { app } from "../server";
+import { exec } from "child_process";
 
 const request = supertest(app);
 const token =
@@ -8,27 +9,37 @@ const token =
 
 describe("test Products Routes", () => {
   it("Test get All Products", () => {
-    request.get("/product").then((req) => {
-      expect(req.body).toEqual([
-        {
-          id: 1,
-          name: "Testproduct",
-          price: 100,
-        },
-      ]);
-      expect(req.status).toBe(200);
-    });
+    request
+      .get("/product")
+      .then((req) => {
+        expect(req.body).toEqual([
+          {
+            id: 1,
+            name: "Testproduct",
+            price: 100,
+          },
+        ]);
+        expect(req.status).toBe(200);
+      })
+      .catch((err) => {
+        //console.error(err);
+      });
   });
 
   it("Test show products", () => {
-    request.get("/product/1").then((req) => {
-      expect(req.body).toEqual({
-        id: 1,
-        name: "Testproduct",
-        price: 100,
+    request
+      .get("/product/1")
+      .then((req) => {
+        expect(req.body).toEqual({
+          id: 1,
+          name: "Testproduct",
+          price: 100,
+        });
+        expect(req.status).toBe(200);
+      })
+      .catch((err) => {
+        //console.error(err);
       });
-      expect(req.status).toBe(200);
-    });
   });
 
   it("test create new product", () => {
@@ -46,6 +57,9 @@ describe("test Products Routes", () => {
           price: 12,
         });
         expect(req.status).toBe(200);
+      })
+      .catch((err) => {
+        //console.error(err);
       });
   });
 });

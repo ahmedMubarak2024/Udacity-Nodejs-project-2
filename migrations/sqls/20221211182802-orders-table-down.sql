@@ -1,3 +1,3 @@
 /* Replace with your SQL commands */
-DROP TABLE orders; 
-DROP TYPE  VALID_STATUS;
+DROP TABLE IF  EXISTS orders; 
+DROP TYPE IF  EXISTS VALID_STATUS;

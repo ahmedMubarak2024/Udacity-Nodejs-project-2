@@ -1,2 +1,2 @@
 /* Replace with your SQL commands */
-DROP TABLE user_table
+DROP TABLE IF  EXISTS user_table

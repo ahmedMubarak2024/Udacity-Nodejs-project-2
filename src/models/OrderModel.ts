@@ -2,12 +2,19 @@ import { client } from "../database";
 import { ErrorStatus } from "./ErrorModel";
 import { Product } from "./Products";
 import { tableName as productTable, ProductStore } from "./Products";
-export type OrderProduct = Product & { quantity: number };
+export type OrderProduct = {
+  id: number;
+  quantity: number;
+  order_id: string;
+  product_id: string;
+};
+
+export type ProductOrderItem = Product & { quantity: number };
 export type Order = {
   id?: number;
-  user_id: number;
+  user_id: string;
   status?: string;
-  products?: Array<OrderProduct>;
+  products?: Array<ProductOrderItem>;
 };
 export const tableName = "orders";
 const manyToManyTable = "order_products";
@@ -18,7 +25,7 @@ export class OrderStore {
     quantity: number,
     userId: number,
     orderId?: number
-  ): Promise<Order | ErrorStatus> {
+  ): Promise<OrderProduct | ErrorStatus> {
     try {
       const product = await new ProductStore().show(productId);
       //  console.log(product);

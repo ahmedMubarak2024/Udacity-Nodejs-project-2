@@ -1,5 +1,5 @@
 /node_modules/*
 /Build/*
 /dist/*
-.env.dev
-.env.test
+# .env.dev
+# .env.test

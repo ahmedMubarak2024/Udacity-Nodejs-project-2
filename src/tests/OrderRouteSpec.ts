@@ -1,6 +1,7 @@
 import supertest from "supertest";
 
 import { app } from "../server";
+import { Order } from "../models/OrderModel";
 
 const request = supertest(app);
 const token =
@@ -13,11 +14,14 @@ describe("test order Routes", () => {
       .set("authorization", token)
       .then((req) => {
         //console.log(req.body);
-        
-        expect(req.body).toEqual({
-          id: 1,
+        const body = req.body as Order;
+        body.id = undefined;
+        body.products = undefined;
+        expect(body).toEqual({
+          id: undefined,
           status: "active",
           user_id: "1",
+          products: undefined,
         });
         expect(req.status).toBe(200);
       })

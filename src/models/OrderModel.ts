@@ -3,9 +3,9 @@ import { ErrorStatus } from "./ErrorModel";
 import { Product } from "./Products";
 import { tableName as productTable, ProductStore } from "./Products";
 export type OrderProduct = {
-  id: number;
+  id?: number;
   quantity: number;
-  order_id: string;
+  order_id: string | undefined;
   product_id: string;
 };
 

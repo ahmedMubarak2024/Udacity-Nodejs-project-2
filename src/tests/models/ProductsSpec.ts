@@ -4,14 +4,15 @@ describe("test Product Model", () => {
   const store = new ProductStore();
   it("test create Product", async () => {
     const product: Product = {
-      id: 2,
+      id: undefined,
       name: "Testproduct2",
       price: 3,
     };
     store
       .create(product)
       .then((res) => {
-        expect(product).toEqual(product);
+        (res as Product).id = undefined;
+        expect(res).toEqual(product);
       })
       .catch((err) => {
         //console.log(err)
@@ -24,15 +25,10 @@ describe("test Product Model", () => {
       name: "Testproduct",
       price: 100,
     };
-    const product2: Product = {
-      id: 2,
-      name: "Testproduct2",
-      price: 3,
-    };
     store
       .index()
       .then((res) => {
-        expect(res).toEqual([product1, product2]);
+        expect(res as Product[]).toContain(product1);
       })
       .catch((err) => {
         //console.log(err)

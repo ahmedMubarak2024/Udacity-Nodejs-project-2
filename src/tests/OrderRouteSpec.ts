@@ -1,7 +1,6 @@
 import supertest from "supertest";
 
 import { app } from "../server";
-import { exec } from "child_process";
 
 const request = supertest(app);
 const token =
@@ -13,6 +12,8 @@ describe("test order Routes", () => {
       .post("/orders")
       .set("authorization", token)
       .then((req) => {
+        //console.log(req.body);
+        
         expect(req.body).toEqual({
           id: 1,
           status: "active",
